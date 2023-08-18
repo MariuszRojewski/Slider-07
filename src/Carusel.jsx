@@ -1,5 +1,5 @@
 import React from 'react'
-import { shortList, list, longList } from "./data"
+import { shortList, list } from "./data"
 import { FaQuoteRight } from 'react-icons/fa'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
@@ -8,26 +8,33 @@ const Carusel = () => {
   const [currentPerson, setCurrentPerson] = React.useState(0)
 
   const prevSlide = () => {    
-    setCurrentPerson(prevIndex => {
-        return prevIndex - 1;
+    setCurrentPerson((prevIndex) => {
+      const newIndex = prevIndex - 1
+      return newIndex;
     })
-    if(currentPerson <= 0) return setCurrentPerson(people.length -1);
+    if(currentPerson <= 0) {
+      setCurrentPerson(people.length -1);
+    }
   }
 
   const nextSlide = () => {
-    setCurrentPerson(prevIndex => {
-        return prevIndex + 1;
+    setCurrentPerson((prevIndex) => {
+      const newIndex = prevIndex + 1
+      return newIndex;
     })
-    if(currentPerson >= people.length - 1) return setCurrentPerson(0)
+    if(currentPerson >= people.length - 1) {
+      setCurrentPerson(0);
+    }
   }
 
-  // Trzeba naprawić logikę przesuwania slidów, teraz całość chodzi tak
-  // że w sytuacji odpalenia useEffect, slide przechodzi na koniec
-
   React.useEffect(() => {
-    setInterval(() => {
+    let sliderId = setInterval(() => {
         nextSlide();
-    }, 5000);
+    }, 2000);
+
+    return () => {
+      clearInterval(sliderId);
+    }
   }, [currentPerson])
 
   return (
